@@ -51,17 +51,22 @@ public class User {
 	private String confirmPassword;
 	
 			//relationship to the giraffe records the user has created
-	@OneToMany(mappedBy="creator", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="giraffeCreator", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private List<Giraffe> giraffes;
+	
+			//relationship to the user who updated a giraffe
+	@OneToMany(mappedBy="updatedBy", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	private List <Giraffe> giraffeUpdated;
 	
 			//relationship to the group the user belongs to
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="group_id")
-	private Group group;
+	private ConGroup employer;
 	
-			//relationship to notes written by the user for giraffe
-	@OneToMany(mappedBy="user", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-	private List <Note> notes;
+
+	//relationship to notes written by the user for giraffe
+	@OneToMany(mappedBy="noteCreator", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	private List <Note> userNotes;
 	
 	
 	
@@ -81,25 +86,29 @@ public class User {
 		this.updatedAt = new Date();
 	}
 	
-//	@OneToMany(mappedBy="creator", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-//	private List<Idea> ideas;
-//	
-//	@ManyToMany(fetch=FetchType.LAZY)
-//	@JoinTable(
-//			name="fanlist",
-//			joinColumns = @JoinColumn(name="user_id"),
-//			inverseJoinColumns = @JoinColumn(name="idea_id")
-//			)
-//	private List<Idea> fanclicks;
-	
-
-	
 	
 
 	public User() {
-
+		super();
 	}
 
+	public User(@NotBlank @Size(max = 60) String firstName, @NotBlank @Size(max = 60) String lastName,
+			@Email String email, String password, String confirmPassword, List<Giraffe> giraffes,
+			List<ConGroup> groupsCreated, ConGroup employer, List<Note> userNotes) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+		this.confirmPassword = confirmPassword;
+		this.giraffes = giraffes;
+		this.employer = employer;
+		this.userNotes = userNotes;
+	}
+
+	
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -148,7 +157,56 @@ public class User {
 		this.confirmPassword = confirmPassword;
 	}
 
+	public List<Giraffe> getGiraffes() {
+		return giraffes;
+	}
 
+	public void setGiraffes(List<Giraffe> giraffes) {
+		this.giraffes = giraffes;
+	}
+
+	public List<Giraffe> getGiraffeUpdated() {
+		return giraffeUpdated;
+	}
+
+	public void setGiraffeUpdated(List<Giraffe> giraffeUpdated) {
+		this.giraffeUpdated = giraffeUpdated;
+	}
+
+	public ConGroup getEmployer() {
+		return employer;
+	}
+
+	
+	public List<Note> getUserNotes() {
+		return userNotes;
+	}
+
+	public void setUserNotes(List<Note> userNotes) {
+		this.userNotes = userNotes;
+	}
+
+	public void setEmployer(ConGroup employer) {
+		this.employer = employer;
+	}
+
+
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
+	}
 	
 	
 	

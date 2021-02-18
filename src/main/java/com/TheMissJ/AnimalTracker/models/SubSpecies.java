@@ -17,7 +17,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name="sub_species")
-public class Sub_Species {
+public class SubSpecies {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -34,10 +34,78 @@ public class Sub_Species {
 	@Column(updatable=false)
 	@DateTimeFormat(pattern = "MM-dd-YYYY HH:mm:ss")
 	private Date createdAt;
+	@DateTimeFormat(pattern = "MM-dd-YYYY HH:mm:ss")
+	private Date updatedAt;
 
 	
 	@PrePersist
 	protected void onCreate() {
 		this.createdAt = new Date();
 	}
+
+
+	public SubSpecies() {
+		super();
+	}
+
+
+	public SubSpecies(String name, Species species) {
+		super();
+		this.name = name;
+		this.species = species;
+	}
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+	public String getName() {
+		return name;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+	public Species getSpecies() {
+		return species;
+	}
+
+
+	public void setSpecies(Species species) {
+		this.species = species;
+	}
+
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+	
+	
+	
+	
 }

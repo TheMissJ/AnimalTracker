@@ -1,5 +1,7 @@
 package com.TheMissJ.AnimalTracker.services;
 
+import java.util.List;
+
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,7 +49,15 @@ public class UserService {
 	public User getSingleUser(Long id) {
 		return this.uRepo.findById(id).orElse(null);
 		
+	}
+
+	public List getAllUsers() {
+		return this.uRepo.findAll();
 	}	
+	
+	public User update (User user) {
+		return this.uRepo.save(user);
+	}
 	
 	
 	

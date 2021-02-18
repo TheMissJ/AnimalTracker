@@ -21,6 +21,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 @Table(name="giraffes")
 public class Giraffe {
@@ -44,7 +45,12 @@ public class Giraffe {
 			//relationship to the user who created the giraffe
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="user_id")
-	private User creator;
+	private User giraffeCreator;
+	
+			//relationship showing who last updated the giraffe
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="updated_user_id")
+	private User updatedBy;
 	
 	
 			//relationship to the location of the giraffe
@@ -61,8 +67,11 @@ public class Giraffe {
 	private Tracker tracker;
 	
 			//relationship to the species the giraffe belongs to
-	@OneToOne(mappedBy="giraffe", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="species_id")
 	private Species species;
+	
+	private String subSpecies;
 	
 	
 	@Column(updatable=false)
@@ -79,6 +88,148 @@ public class Giraffe {
 	@PreUpdate
 	protected void onUpdate() {
 		this.updatedAt = new Date();
+	}
+
+	public Giraffe() {
+		super();
+	}
+
+	public Giraffe(@NotBlank @Size(max = 60) String name, @Size(max = 4) int birth_year, float height, float weight,
+			char gender, User creator, Location location, List<Note> notes, Tracker tracker, Species species, String subSpecies) {
+		super();
+		this.name = name;
+		this.birth_year = birth_year;
+		this.height = height;
+		this.weight = weight;
+		this.gender = gender;
+		this.giraffeCreator = giraffeCreator;
+		this.location = location;
+		this.notes = notes;
+		this.tracker = tracker;
+		this.species = species;
+		this.subSpecies = subSpecies;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getBirth_year() {
+		return birth_year;
+	}
+
+	public void setBirth_year(int birth_year) {
+		this.birth_year = birth_year;
+	}
+
+	public float getHeight() {
+		return height;
+	}
+
+	public void setHeight(float height) {
+		this.height = height;
+	}
+
+	public float getWeight() {
+		return weight;
+	}
+
+	public void setWeight(float weight) {
+		this.weight = weight;
+	}
+
+	public char getGender() {
+		return gender;
+	}
+
+	public void setGender(char gender) {
+		this.gender = gender;
+	}
+
+
+
+	public User getGiraffeCreator() {
+		return giraffeCreator;
+	}
+
+	public void setGiraffeCreator(User giraffeCreator) {
+		this.giraffeCreator = giraffeCreator;
+	}
+
+	public User getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(User updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
+	public List<Note> getNotes() {
+		return notes;
+	}
+
+	public void setNotes(List<Note> notes) {
+		this.notes = notes;
+	}
+
+	public Tracker getTracker() {
+		return tracker;
+	}
+
+	public void setTracker(Tracker tracker) {
+		this.tracker = tracker;
+	}
+
+	public Species getSpecies() {
+		return species;
+	}
+
+	public void setSpecies(Species species) {
+		this.species = species;
+	}
+
+	public String getSubSpecies() {
+		return subSpecies;
+	}
+
+	public void setSubSpecies(String subSpecies) {
+		this.subSpecies = subSpecies;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 	
 	
