@@ -31,20 +31,23 @@ public class Giraffe {
 	private Long id;
 	
 	@NotBlank
+	@Column(updatable=false)
 	@Size(max=60)
 	private String name;
 	
+	@Column(updatable=false)
 	@Size(max = 4)
 	private int birth_year;
 	
 	private float height;
 	private float weight;
 	
+	@Column(updatable=false)
 	private char gender;
 	
 			//relationship to the user who created the giraffe
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="user_id")
+	@JoinColumn(name="user_id", updatable=false)
 	private User giraffeCreator;
 	
 			//relationship showing who last updated the giraffe
@@ -68,10 +71,23 @@ public class Giraffe {
 	
 			//relationship to the species the giraffe belongs to
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="species_id")
+	@JoinColumn(name="species_id", updatable=false)
 	private Species species;
 	
+	@Column(updatable=false)
 	private String subSpecies;
+	
+	private String mother;
+	private String father;
+	
+	private boolean deceased;
+	
+	@Column(updatable=false)
+	@Size(max = 4)
+	private int death_year;
+	
+	@Column(updatable=false)
+	private String deathCause;
 	
 	
 	@Column(updatable=false)
@@ -214,6 +230,46 @@ public class Giraffe {
 
 	public void setSubSpecies(String subSpecies) {
 		this.subSpecies = subSpecies;
+	}
+
+	public String getMother() {
+		return mother;
+	}
+
+	public void setMother(String mother) {
+		this.mother = mother;
+	}
+
+	public String getFather() {
+		return father;
+	}
+
+	public void setFather(String father) {
+		this.father = father;
+	}
+
+	public boolean isDeceased() {
+		return deceased;
+	}
+
+	public void setDeceased(boolean deceased) {
+		this.deceased = deceased;
+	}
+
+	public int getDeath_year() {
+		return death_year;
+	}
+
+	public void setDeath_year(int death_year) {
+		this.death_year = death_year;
+	}
+
+	public String getDeathCause() {
+		return deathCause;
+	}
+
+	public void setDeathCause(String deathCause) {
+		this.deathCause = deathCause;
 	}
 
 	public Date getCreatedAt() {

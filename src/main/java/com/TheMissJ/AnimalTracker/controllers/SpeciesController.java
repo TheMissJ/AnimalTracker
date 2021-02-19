@@ -84,6 +84,7 @@ public class SpeciesController {
 				return "/species/new_subspecies.jsp";
 			}
 			Long speciesId = (Long)session.getAttribute("species_id");
+			Species species = this.sService.getById(speciesId);
 			this.subService.create(subspecies);
 			return "redirect:/species/{id}";
 		

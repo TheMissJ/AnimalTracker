@@ -45,7 +45,8 @@
 	</table>
 
 	<a href="giraffe/new" class="btn btn-danger">Add New Giraffe</a>
-		<a href="congroup/new" class="btn btn-danger">Add New Group</a>
+	<a href="congroup/new" class="btn btn-danger">Add New Group</a>
+	<a href="/tracker/new" class="btn btn-danger">Add New Tracker</a>
 
 </body>
 </html>

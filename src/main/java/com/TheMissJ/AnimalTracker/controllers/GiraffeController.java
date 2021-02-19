@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.TheMissJ.AnimalTracker.models.Giraffe;
+import com.TheMissJ.AnimalTracker.models.Note;
 import com.TheMissJ.AnimalTracker.models.ConGroup;
 import com.TheMissJ.AnimalTracker.models.User;
 import com.TheMissJ.AnimalTracker.services.GiraffeService;
@@ -85,12 +86,32 @@ public class GiraffeController {
 	@PostMapping("/new")
 	private String createGiraffe(@ModelAttribute("giraffe") Giraffe giraffe, Model viewModel, BindingResult result, HttpSession session) {
 		Long userId = (Long)session.getAttribute("user_id");
+		Long speciesId = (Long)session.getAttribute("species_id");
 		User userCreatedGiraffe = this.uService.getSingleUser(userId);
+		viewModel.addAttribute("thisSpecies", this.sService.getById(speciesId));
 		giraffe.setGiraffeCreator(userCreatedGiraffe);
 		this.gService.create(giraffe);
 		return "redirect:/giraffe";
-	}	
+	}
 	
+					//Add Note For Giraffe
+	@GetMapping("/edit/{giraffe.id}/note/add")
+	public String addNote(@ModelAttribute("note") Note note, BindingResult result, @PathVariable("giraffe.id") Long id, Model viewModel, HttpSession session) {
+	viewModel.addAttribute("note", this.nService.getNotes());
+	return "/note/newnote.jsp";
+	
+	}
+
+	@PostMapping("/edit/{giraffe.id}/note/add")
+	public String createNote(@ModelAttribute("note") Note note, BindingResult result, @PathVariable("giraffe.id") Long id, Model viewModel, HttpSession session) {
+		Long userId = (Long)session.getAttribute("user_id");
+		Giraffe giraffeId = this.gService.getById(id);
+		User userCreatedNote = this.uService.getSingleUser(userId);
+		note.setNoteCreator(userCreatedNote);
+		note.setGiraffe(giraffeId);
+		return "redirect:/giraffe/" + giraffeId;
+	}
+		
 	
 						//Display Giraffe Details Page
 	
@@ -122,6 +143,7 @@ public class GiraffeController {
 		return "redirect:/giraffe/" + giraffeId;
 		
 	}
+	
 	
 
 				

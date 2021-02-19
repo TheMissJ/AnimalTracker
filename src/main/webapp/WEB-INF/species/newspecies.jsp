@@ -12,5 +12,22 @@
 </head>
 <body>
 
+<div class="container">
+	<h2>Add Species</h2>
+	
+	<form:form method="POST" action="/species/new" modelAttribute="species">
+	<div class="form-group">
+		<form:label path="name">Species Name:</form:label>
+		<form:errors path="name"/> 
+		<form:input class="form-control" path="name"/>
+	</div>
+		
+	<button>Save</button> 
+	</form:form>
+</div>
+	<br />
+	<a href="/giraffe">Dashboard</a>
+	<br />
+	<a href="/logout">Logout</a>
 </body>
 </html>

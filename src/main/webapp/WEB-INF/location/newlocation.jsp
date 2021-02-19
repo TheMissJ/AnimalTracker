@@ -8,9 +8,27 @@
 <meta charset="ISO-8859-1">
 <meta name="author" content="Jessica LaPlante">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/simplex/bootstrap.min.css">
-<title>Insert title here</title>
+<title>Add New Location</title>
 </head>
 <body>
 
+<div class="container">
+	<h2>Add Location</h2>
+	
+	<form:form method="POST" action="/location/new" modelAttribute="location">
+	<div class="form-group">
+		<form:label path="name">Location Name:</form:label>
+		<form:errors path="name"/> 
+		<form:input class="form-control" path="name"/>
+	</div>
+		
+	<button>Save</button> 
+	</form:form>
+</div>
+	<br />
+	<a href="/giraffe">Dashboard</a>
+	<br />
+	<a href="/logout">Logout</a>
+	
 </body>
 </html>

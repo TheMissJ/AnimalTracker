@@ -12,5 +12,23 @@
 </head>
 <body>
 
+	<div class="container">
+		<h2>Add Note for ${note.giraffe.name}</h2>
+		
+		<form:form method="POST" action="/edit/{giraffe.id}/note/add" modelAttribute="note">
+		<div class="form-group">
+			<form:label path="content">Note Content:</form:label>
+			<form:errors path="content"/> 
+			<form:textarea class="form-control" path="content" rows="8" cols="40"/>
+		</div>
+			
+		<button>Save</button> 
+		</form:form>
+	</div>
+		<br />
+		<a href="/giraffe">Dashboard</a>
+		<br />
+		<a href="/logout">Logout</a>
+		
 </body>
 </html>
