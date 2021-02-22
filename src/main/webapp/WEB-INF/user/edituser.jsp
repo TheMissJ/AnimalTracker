@@ -7,63 +7,66 @@
 <head>
 <meta charset="ISO-8859-1">
 <meta name="author" content="Jessica LaPlante">
+
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/simplex/bootstrap.min.css">
+<link rel="stylesheet" href="/css/style.css">
 <title>Edit Conservation Staff Page</title>
 </head>
-<body>
-
-	<h1>Edit Your Account, ${user.firstName} ${user.lastName}</h1>
-
+<body class="background-img">
 	<br />
 	<br />
 
-	<form:form method="POST" action="/user/edit/${user.id}" modelAttribute="user">
-		<div class="form-group">
-			<form:label path="firstName">First Name:</form:label>
-				<form:errors path="firstName" />
-				<form:input class="form-control" path="firstName" />
+	<div class="jumbotron">
+		<h1 class="text-center">Edit Your Account, ${user.firstName}
+			${user.lastName}</h1>
 
-		</div>
+		<br />
 
-		<div class="form-group">
-			<form:label path="lastName">Last Name:</form:label>
-			<form:errors path="lastName" />
-			<form:input class="form-control" path="lastName"></form:input>
-		</div>
-		
-				<div class="form-group">
-			<form:label path="email">Email:</form:label>
-			<form:errors path="email" />
-			<form:input class="form-control" path="email"></form:input>
-		</div>
+		<form:form method="POST" action="/user/edit/${user.id}"
+			modelAttribute="user">
+					<h4>Staff Details</h4>
+					<div class="form-group">
+						<form:label path="firstName">First Name:</form:label>
+						<form:errors path="firstName" />
+						<form:input class="form-control" path="firstName" />
+					</div>
 
-		<div class="form-group">
-			<form:label path="employer">Group:</form:label>
-			<form:errors path="employer" />
-			<form:select class="form-control" path="employer">
-				<option value="${user.employer }">${user.employer.name}</option>
-				<c:forEach items="${congroups }">
-					<c:choose>
-						<c:when test="${user.employer == congroup.id }">
-						</c:when>
-						<c:otherwise>
-							<option value="${congroup.id }">${congroup.name }</option>
-						</c:otherwise>
-					</c:choose>
-				</c:forEach>
-			</form:select>
-		</div>
-		
-		<button class="btn button-danger">Save</button>
-	</form:form>
+					<div class="form-group">
+						<form:label path="lastName">Last Name:</form:label>
+						<form:errors path="lastName" />
+						<form:input class="form-control" path="lastName"></form:input>
+					</div>
 
-	<br>
-	<br>
+					<div class="form-group">
+						<form:label path="email">Email:</form:label>
+						<form:errors path="email" />
+						<form:input class="form-control" path="email"></form:input>
+					</div>
 
-	<a href="/giraffe">Dashboard</a>
-	<hr />
-	<a href="/logout">Logout</a>
+					<div class="form-group">
+						<form:label path="employer">Group:</form:label>
+						<form:errors path="employer" />
+						<form:select class="form-control" path="employer">
+							<option value="${user.employer.id}">${user.employer.name}</option>
+							<c:forEach items="${congroups}" var="congroup">
+								<c:choose>
+									<c:when test="${congroup.id == user.employer.id}">
+									</c:when>
+									<c:otherwise>
+										<option value="${congroup.id}">${congroup.name}</option>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+						</form:select>
+						<br />
+			<button class="btn btn-danger">Save</button>
+		</form:form>
+	</div>
+
+	<br />
+	<a href="/giraffe" class="btn btn-danger">Dashboard</a>
+	<a href="/logout" class="btn btn-danger">Logout</a>
 
 </body>
 </html>

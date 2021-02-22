@@ -36,7 +36,7 @@ public class LocationController {
 	@GetMapping("/{id}")
 	public String displayLocation(@PathVariable("id") Long id, Model viewModel) {
 		viewModel.addAttribute("location", this.lService.getById(id));
-		viewModel.addAttribute("location", this.gService.getGiraffes());
+		viewModel.addAttribute("giraffes", this.gService.getGiraffes());
 		return "/location/showlocation.jsp";
 		
 	}

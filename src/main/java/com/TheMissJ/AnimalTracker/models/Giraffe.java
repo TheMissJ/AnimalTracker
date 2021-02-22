@@ -36,14 +36,15 @@ public class Giraffe {
 	private String name;
 	
 	@Column(updatable=false)
-	@Size(max = 4)
-	private int birth_year;
+	@Size(min = 4, max = 4)
+	private String birth_year;
 	
 	private float height;
 	private float weight;
 	
-	@Column(updatable=false)
 	private char gender;
+	
+	private String species;
 	
 			//relationship to the user who created the giraffe
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -65,28 +66,36 @@ public class Giraffe {
 	@OneToMany(mappedBy="giraffe", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private List <Note> notes;
 	
-			//relationship to the tracker assigned to the giraffe
-	@OneToOne(mappedBy="giraffe", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-	private Tracker tracker;
+			//relationship to the tracker assigned to the giraffe (owning side)
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="tracker_id")
+	private Tracker myTracker;
 	
-			//relationship to the species the giraffe belongs to
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="species_id", updatable=false)
-	private Species species;
+		//relationship from a giraffe to its mother
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="mother_id")
+	private Giraffe mother;
 	
-	@Column(updatable=false)
-	private String subSpecies;
+		//relationship from a mother giraffe to its child(ren)
+	@OneToMany(mappedBy="mother", cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	private List<Giraffe> momkids;
 	
-	private String mother;
-	private String father;
+		//relationship from a giraffe to its father
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="father_id")
+	private Giraffe father;
 	
+		//relationship from a father giraffe to its child(ren)
+	@OneToMany(mappedBy="father", cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	private List<Giraffe> dadkids;
+	
+	@Column(nullable=true)
 	private boolean deceased;
 	
-	@Column(updatable=false)
-	@Size(max = 4)
-	private int death_year;
+	@Column(nullable=true, updatable=false)
+	private String death_year;
 	
-	@Column(updatable=false)
+	@Column(nullable=true, updatable=false)
 	private String deathCause;
 	
 	
@@ -106,26 +115,47 @@ public class Giraffe {
 		this.updatedAt = new Date();
 	}
 
+	
+				//Constructors
+	
 	public Giraffe() {
 		super();
 	}
 
-	public Giraffe(@NotBlank @Size(max = 60) String name, @Size(max = 4) int birth_year, float height, float weight,
-			char gender, User creator, Location location, List<Note> notes, Tracker tracker, Species species, String subSpecies) {
-		super();
-		this.name = name;
-		this.birth_year = birth_year;
-		this.height = height;
-		this.weight = weight;
-		this.gender = gender;
-		this.giraffeCreator = giraffeCreator;
-		this.location = location;
-		this.notes = notes;
-		this.tracker = tracker;
-		this.species = species;
-		this.subSpecies = subSpecies;
-	}
 
+
+			public Giraffe(Long id, @NotBlank @Size(max = 60) String name,
+						@Size(min = 4, max = 4) String birth_year, float height, float weight, char gender,
+						String species, User giraffeCreator, User updatedBy, Location location, List<Note> notes,
+						Tracker myTracker, Giraffe mother, List<Giraffe> momkids, Giraffe father, List<Giraffe> dadkids,
+						boolean deceased, String death_year, String deathCause, Date createdAt, Date updatedAt) {
+					super();
+					this.id = id;
+					this.name = name;
+					this.birth_year = birth_year;
+					this.height = height;
+					this.weight = weight;
+					this.gender = gender;
+					this.species = species;
+					this.giraffeCreator = giraffeCreator;
+					this.updatedBy = updatedBy;
+					this.location = location;
+					this.notes = notes;
+					this.myTracker = myTracker;
+					this.mother = mother;
+					this.momkids = momkids;
+					this.father = father;
+					this.dadkids = dadkids;
+					this.deceased = deceased;
+					this.death_year = death_year;
+					this.deathCause = deathCause;
+					this.createdAt = createdAt;
+					this.updatedAt = updatedAt;
+				}
+
+			//Getters and Setters
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -142,11 +172,13 @@ public class Giraffe {
 		this.name = name;
 	}
 
-	public int getBirth_year() {
+
+
+	public String getBirth_year() {
 		return birth_year;
 	}
 
-	public void setBirth_year(int birth_year) {
+	public void setBirth_year(String birth_year) {
 		this.birth_year = birth_year;
 	}
 
@@ -175,6 +207,14 @@ public class Giraffe {
 	}
 
 
+
+	public String getSpecies() {
+		return species;
+	}
+
+	public void setSpecies(String species) {
+		this.species = species;
+	}
 
 	public User getGiraffeCreator() {
 		return giraffeCreator;
@@ -208,44 +248,44 @@ public class Giraffe {
 		this.notes = notes;
 	}
 
-	public Tracker getTracker() {
-		return tracker;
+	public Tracker getMyTracker() {
+		return myTracker;
 	}
 
-	public void setTracker(Tracker tracker) {
-		this.tracker = tracker;
+	public void setMyTracker(Tracker myTracker) {
+		this.myTracker = myTracker;
 	}
 
-	public Species getSpecies() {
-		return species;
-	}
-
-	public void setSpecies(Species species) {
-		this.species = species;
-	}
-
-	public String getSubSpecies() {
-		return subSpecies;
-	}
-
-	public void setSubSpecies(String subSpecies) {
-		this.subSpecies = subSpecies;
-	}
-
-	public String getMother() {
+	public Giraffe getMother() {
 		return mother;
 	}
 
-	public void setMother(String mother) {
+	public void setMother(Giraffe mother) {
 		this.mother = mother;
 	}
 
-	public String getFather() {
+	public List<Giraffe> getMomkids() {
+		return momkids;
+	}
+
+	public void setMomkids(List<Giraffe> momkids) {
+		this.momkids = momkids;
+	}
+
+	public Giraffe getFather() {
 		return father;
 	}
 
-	public void setFather(String father) {
+	public void setFather(Giraffe father) {
 		this.father = father;
+	}
+
+	public List<Giraffe> getDadkids() {
+		return dadkids;
+	}
+
+	public void setDadkids(List<Giraffe> dadkids) {
+		this.dadkids = dadkids;
 	}
 
 	public boolean isDeceased() {
@@ -256,11 +296,11 @@ public class Giraffe {
 		this.deceased = deceased;
 	}
 
-	public int getDeath_year() {
+	public String getDeath_year() {
 		return death_year;
 	}
 
-	public void setDeath_year(int death_year) {
+	public void setDeath_year(String death_year) {
 		this.death_year = death_year;
 	}
 
@@ -287,6 +327,78 @@ public class Giraffe {
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
+
+	public void setLocation(Object attribute) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setTracker(Object attribute) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setMyTracker(Object attribute) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setMother(Object attribute) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setFather(Object attribute) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setHeight(Object attribute) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setWeight(Object attribute) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setDeceased(Object attribute) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setDeath_year(Object attribute) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setDeathCause(Object attribute) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void setSpecies(Object attribute) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setGender(Object attribute) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setBirth_year(Object attribute) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 	
 	
 	

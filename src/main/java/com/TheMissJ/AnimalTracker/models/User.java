@@ -15,6 +15,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -45,10 +46,16 @@ public class User {
 	
 	@Email
 	private String email;
+	
+	@Column(updatable=false)
 	private String password;
 	
 	@Transient
 	private String confirmPassword;
+	
+		//relationship to the profile picture of the user (owning side)
+	@OneToOne(mappedBy="user", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	private Picture profilePic;
 	
 			//relationship to the giraffe records the user has created
 	@OneToMany(mappedBy="giraffeCreator", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
@@ -64,11 +71,10 @@ public class User {
 	private ConGroup employer;
 	
 
-	//relationship to notes written by the user for giraffe
+			//relationship to notes written by the user for giraffe
 	@OneToMany(mappedBy="noteCreator", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private List <Note> userNotes;
-	
-	
+		
 	
 	@Column(updatable=false)
 	@DateTimeFormat(pattern = "MM-dd-YYYY HH:mm:ss")
@@ -86,27 +92,33 @@ public class User {
 		this.updatedAt = new Date();
 	}
 	
-	
+			//Constructors
 
 	public User() {
 		super();
 	}
-
-	public User(@NotBlank @Size(max = 60) String firstName, @NotBlank @Size(max = 60) String lastName,
-			@Email String email, String password, String confirmPassword, List<Giraffe> giraffes,
-			List<ConGroup> groupsCreated, ConGroup employer, List<Note> userNotes) {
+	
+	public User(Long id, @NotBlank @Size(max = 60) String firstName, @NotBlank @Size(max = 60) String lastName,
+			@Email String email, String password, String confirmPassword, Picture profilePic, List<Giraffe> giraffes,
+			List<Giraffe> giraffeUpdated, ConGroup employer, List<Note> userNotes, Date createdAt, Date updatedAt) {
 		super();
+		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
 		this.confirmPassword = confirmPassword;
+		this.profilePic = profilePic;
 		this.giraffes = giraffes;
+		this.giraffeUpdated = giraffeUpdated;
 		this.employer = employer;
 		this.userNotes = userNotes;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
 	}
 
 	
+			//Getters and Setters
 	
 	
 	public Long getId() {
@@ -155,6 +167,14 @@ public class User {
 
 	public void setConfirmPassword(String confirmPassword) {
 		this.confirmPassword = confirmPassword;
+	}
+
+	public Picture getProfilePic() {
+		return profilePic;
+	}
+
+	public void setProfilePic(Picture profilePic) {
+		this.profilePic = profilePic;
 	}
 
 	public List<Giraffe> getGiraffes() {

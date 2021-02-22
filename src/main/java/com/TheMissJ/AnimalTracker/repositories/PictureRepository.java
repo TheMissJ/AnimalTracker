@@ -5,18 +5,11 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import com.TheMissJ.AnimalTracker.models.Picture;
 import com.TheMissJ.AnimalTracker.models.User;
 
-
 @Repository
-public interface UserRepository extends CrudRepository<User, Long>{
+public interface PictureRepository extends CrudRepository<Picture, Long> {
 
-	List<User> findAll();
-	boolean existsByEmail(String email);
-	User findByEmail(String email);
-	String profilePic(String url);
-
-	
-	
-	
+	List<Picture> findAllByUser(User user);
 }

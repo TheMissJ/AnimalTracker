@@ -58,6 +58,12 @@ public class UserService {
 	public User update (User user) {
 		return this.uRepo.save(user);
 	}
+
+	public void uploadProfilePic(String url) {
+		String profilePic = new String(url);
+		this.uRepo.profilePic(profilePic);
+		
+	}
 	
 	
 	

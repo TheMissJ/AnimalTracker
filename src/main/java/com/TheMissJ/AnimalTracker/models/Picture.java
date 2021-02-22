@@ -2,6 +2,7 @@ package com.TheMissJ.AnimalTracker.models;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,97 +10,102 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@Table(name="sub_species")
-public class SubSpecies {
+@Table(name="pictures")
+public class Picture {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	private String name;
+	private String image_url;
 	
-			//relationship to the species this sub_species belongs to
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="species_id")
-	private Species species;
+			//relationship to the user, profile picture (non-owning side)
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="user_id")
+	private User user;
 	
-
 	@Column(updatable=false)
 	@DateTimeFormat(pattern = "MM-dd-YYYY HH:mm:ss")
 	private Date createdAt;
 	@DateTimeFormat(pattern = "MM-dd-YYYY HH:mm:ss")
 	private Date updatedAt;
-
 	
 	@PrePersist
 	protected void onCreate() {
 		this.createdAt = new Date();
 	}
+	
+	@PreUpdate
+	protected void onUpdate() {
+		this.updatedAt = new Date();
+	}
 
-
-	public SubSpecies() {
+	
+			//Constructors
+	
+	public Picture() {
 		super();
 	}
 
-
-	public SubSpecies(String name, Species species) {
+	public Picture(Long id, String image_url, User picUser, Date createdAt, Date updatedAt) {
 		super();
-		this.name = name;
-		this.species = species;
+		this.id = id;
+		this.image_url = image_url;
+		this.user = user;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
 	}
 
+	public Picture(String image_url, User picUser) {
+		super();
+		this.image_url = image_url;
+		this.user = picUser;
+	}
 
+	//Getters and Setters
 	public Long getId() {
 		return id;
 	}
-
 
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-
-	public String getName() {
-		return name;
+	public String getImage_url() {
+		return image_url;
 	}
 
-
-	public void setName(String name) {
-		this.name = name;
+	public void setImage_url(String image_url) {
+		this.image_url = image_url;
 	}
 
-
-	public Species getSpecies() {
-		return species;
+	public User getUser() {
+		return user;
 	}
 
-
-	public void setSpecies(Species species) {
-		this.species = species;
+	public void setUser(User user) {
+		this.user = user;
 	}
-
 
 	public Date getCreatedAt() {
 		return createdAt;
 	}
 
-
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
-
 	public Date getUpdatedAt() {
 		return updatedAt;
 	}
-
 
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;

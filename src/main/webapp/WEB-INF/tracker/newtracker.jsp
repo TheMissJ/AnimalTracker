@@ -7,18 +7,22 @@
 <head>
 <meta charset="ISO-8859-1">
 <meta name="author" content="Jessica LaPlante">
+
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/simplex/bootstrap.min.css">
-<title>Create A New Tracker Device</title>
+<link rel="stylesheet" href="/css/style.css">
+<title>Add A New Tracker</title>
 </head>
-<body>
-	<div class="container">
+<body class="background-img">
+	<br />
+	<br />
+	<div class="jumbotron">
 			<h2>Add A New Tracker</h2>
 
 		<form:form method="POST" action="/new" modelAttribute="tracker">
 			<div class="form-group">
-				<form:label path="number">Tracker Number:</form:label>
-				<form:errors path="number" />
-				<form:input class="form-control" path="number" />
+				<form:label path="serialNum">Serial Number:</form:label>
+				<form:errors path="serialNum" />
+				<form:input class="form-control" path="serialNum" />
 			</div>
 			
 						<div class="form-group">
@@ -63,5 +67,9 @@
 		<button class="btn btn-danger">Save</button>
 		</form:form>
 	</div>
+	<br />
+	<a href="/giraffe" class="btn btn-danger">Dashboard</a>
+	<br />
+	<a href="/logout" class="btn btn-danger">Logout</a>
 </body>
 </html>

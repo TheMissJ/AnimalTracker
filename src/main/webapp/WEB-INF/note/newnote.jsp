@@ -7,10 +7,14 @@
 <head>
 <meta charset="ISO-8859-1">
 <meta name="author" content="Jessica LaPlante">
+
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/simplex/bootstrap.min.css">
-<title>Insert title here</title>
+<link rel="stylesheet" href="/css/style.css">
+<title>Add A New Note</title>
 </head>
-<body>
+<body class="background-img">
+	<br />
+	<br />
 
 	<div class="container">
 		<h2>Add Note for ${note.giraffe.name}</h2>
@@ -25,10 +29,10 @@
 		<button>Save</button> 
 		</form:form>
 	</div>
-		<br />
-		<a href="/giraffe">Dashboard</a>
-		<br />
-		<a href="/logout">Logout</a>
+	<br />
+	<a href="/giraffe" class="btn btn-danger">Dashboard</a>
+	<br />
+	<a href="/logout" class="btn btn-danger">Logout</a>
 		
 </body>
 </html>

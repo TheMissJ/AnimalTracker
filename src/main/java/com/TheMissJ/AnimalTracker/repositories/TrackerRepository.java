@@ -11,5 +11,6 @@ import com.TheMissJ.AnimalTracker.models.Tracker;
 public interface TrackerRepository extends CrudRepository<Tracker, Long>{
 
 	List <Tracker> findAll();
-	boolean existsByNumber(String number);
+
+	boolean existsByName(String name);
 }

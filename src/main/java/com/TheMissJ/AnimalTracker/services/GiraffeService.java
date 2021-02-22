@@ -9,7 +9,6 @@ import com.TheMissJ.AnimalTracker.models.Giraffe;
 import com.TheMissJ.AnimalTracker.repositories.GiraffeRepository;
 import com.TheMissJ.AnimalTracker.repositories.ConGroupRepository;
 import com.TheMissJ.AnimalTracker.repositories.LocationRepository;
-import com.TheMissJ.AnimalTracker.repositories.SpeciesRepository;
 import com.TheMissJ.AnimalTracker.repositories.TrackerRepository;
 import com.TheMissJ.AnimalTracker.repositories.UserRepository;
 
@@ -30,10 +29,6 @@ public class GiraffeService {
 //	
 //	@Autowired
 //	private TrackerRepository tRepo;
-//	
-//	@Autowired
-//	private SpeciesRepository sRepo;
-//	
 	
 	
 	public List<Giraffe> getGiraffes(){

@@ -21,8 +21,6 @@ import com.TheMissJ.AnimalTracker.services.GiraffeService;
 import com.TheMissJ.AnimalTracker.services.ConGroupService;
 import com.TheMissJ.AnimalTracker.services.LocationService;
 import com.TheMissJ.AnimalTracker.services.NoteService;
-import com.TheMissJ.AnimalTracker.services.SpeciesService;
-import com.TheMissJ.AnimalTracker.services.SubSpeciesService;
 import com.TheMissJ.AnimalTracker.services.TrackerService;
 import com.TheMissJ.AnimalTracker.services.UserService;
 
@@ -43,12 +41,6 @@ public class GiraffeController {
 	private NoteService nService;
 	
 	@Autowired
-	private SpeciesService sService;
-	
-	@Autowired
-	private SubSpeciesService subService;
-	
-	@Autowired
 	private TrackerService tService;
 	
 	@Autowired
@@ -62,16 +54,9 @@ public class GiraffeController {
 			return "redirect:/";
 		}
 		viewModel.addAttribute("giraffes", this.gService.getGiraffes());
-//		Giraffe thisGiraffe = this.gService.getById(giraffeId);
-//		User updatedByUser = thisGiraffe.getUpdatedBy();
-//		ConGroup groupEmployed = updatedByUser.getEmployer();
-
-		
-		
 		User user = this.uService.getSingleUser((Long)session.getAttribute("user_id"));
 		Long userId = (Long)session.getAttribute("user_id");
 		viewModel.addAttribute("user", this.uService.getSingleUser(userId));
-
 		return "dashboard.jsp";
 	}
 	
@@ -79,17 +64,24 @@ public class GiraffeController {
 	
 	@GetMapping("/new")
 	private String newGiraffe(@ModelAttribute("giraffe") Giraffe giraffe, Model viewModel) {
+		viewModel.addAttribute("locations", this.lService.getLocations());
+		viewModel.addAttribute("trackers", this.tService.getTrackers());
 		viewModel.addAttribute("giraffes", this.gService.getGiraffes());
 		return "new.jsp";
 	}
 	
 	@PostMapping("/new")
-	private String createGiraffe(@ModelAttribute("giraffe") Giraffe giraffe, Model viewModel, BindingResult result, HttpSession session) {
+	private String createGiraffe(@Valid @ModelAttribute("giraffe") Giraffe giraffe, Model viewModel, BindingResult result, HttpSession session) {
+		if(result.hasErrors()) {
+			return "new.jsp";
+		}
 		Long userId = (Long)session.getAttribute("user_id");
-		Long speciesId = (Long)session.getAttribute("species_id");
 		User userCreatedGiraffe = this.uService.getSingleUser(userId);
-		viewModel.addAttribute("thisSpecies", this.sService.getById(speciesId));
+		giraffe.setLocation(viewModel.getAttribute("location"));
 		giraffe.setGiraffeCreator(userCreatedGiraffe);
+		giraffe.setMyTracker(viewModel.getAttribute("tracker"));
+		giraffe.setMother(viewModel.getAttribute("mother"));
+		giraffe.setFather(viewModel.getAttribute("father"));
 		this.gService.create(giraffe);
 		return "redirect:/giraffe";
 	}
@@ -125,22 +117,45 @@ public class GiraffeController {
 					//Edit a Giraffe Page
 	
 	@GetMapping("/edit/{id}")
-	public String editGiraffe(@PathVariable("id") Long id, Model viewModel) {
+	public String editGiraffe(@PathVariable("id") Long id, @ModelAttribute("giraffe") Giraffe giraffe, Model viewModel) {
 		viewModel.addAttribute("giraffe", this.gService.getById(id));
 		viewModel.addAttribute("users", this.uService.getAllUsers());
+		viewModel.addAttribute("locations", this.lService.getLocations());
+		viewModel.addAttribute("trackers", this.tService.getTrackers());
+		viewModel.addAttribute("giraffes", this.gService.getGiraffes());
 		return "edit.jsp";
 		
 	}
 	
-	@PostMapping(value="/edit/{id}")
+	@PostMapping("/edit/{id}")
 	public String updateGiraffe(@Valid @ModelAttribute("giraffe") Giraffe giraffe, BindingResult result, @PathVariable("id") Long id, Model viewModel, HttpSession session) {
 		Long giraffeId = giraffe.getId();
 		if(result.hasErrors()) {
-			viewModel.addAttribute("giraffe", gService.getById(giraffeId));
+			viewModel.addAttribute("giraffe", this.gService.getById(giraffeId));
+			viewModel.addAttribute("users", this.uService.getAllUsers());
+			viewModel.addAttribute("locations", this.lService.getLocations());
+			viewModel.addAttribute("trackers", this.tService.getTrackers());
+			viewModel.addAttribute("giraffes", this.gService.getGiraffes());
+			System.out.println("are we here?");
 			return "edit.jsp";
 		}
+		Long userId = (Long)session.getAttribute("user_id");
+		User userUpdatedGiraffe = this.uService.getSingleUser(userId);
+		giraffe.setUpdatedBy(userUpdatedGiraffe);
+		giraffe.setBirth_year(viewModel.getAttribute("birth_year"));
+		giraffe.setGender(viewModel.getAttribute("gender"));
+		giraffe.setSpecies(viewModel.getAttribute("species"));
+		giraffe.setHeight(viewModel.getAttribute("height"));
+		giraffe.setWeight(viewModel.getAttribute("weight"));
+		giraffe.setLocation(viewModel.getAttribute("location"));
+		giraffe.setMyTracker(viewModel.getAttribute("myTracker"));
+		giraffe.setMother(viewModel.getAttribute("mother"));
+		giraffe.setFather(viewModel.getAttribute("father"));
+		giraffe.setDeceased(viewModel.getAttribute("deceased"));
+		giraffe.setDeath_year(viewModel.getAttribute("death_year"));
+		giraffe.setDeathCause(viewModel.getAttribute("deathCause"));
 		this.gService.update(giraffe);
-		return "redirect:/giraffe/" + giraffeId;
+		return "redirect:/giraffe";
 		
 	}
 	

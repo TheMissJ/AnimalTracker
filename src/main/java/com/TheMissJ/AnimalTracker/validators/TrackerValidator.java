@@ -16,8 +16,8 @@ public class TrackerValidator {
 	public void validate (Object target, Errors errors) {
 		Tracker tracker = (Tracker) target;
 		
-		if(this.tRepo.existsByNumber(tracker.getNumber())) {
-			errors.rejectValue("Tracker Number", "Duplicate Tracker Number", "This Tracker Number Already Exists");
+		if(this.tRepo.existsByName(tracker.getName())) {
+			errors.rejectValue("Tracker Name", "Duplicate Tracker Name", "This Tracker Name Already Exists");
 		}
 	}
 }

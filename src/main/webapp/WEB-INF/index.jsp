@@ -9,9 +9,12 @@
 <meta name="author" content="Jessica LaPlante">
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/simplex/bootstrap.min.css">
-<title>Animal Tracker Login Page</title>
+<link rel="stylesheet" href="/css/style.css">
+<title>Animal Tracker Registration Page</title>
 </head>
-<body>
+<body class="background-img">
+	<br />
+	<br />
 
 <div class="jumbotron">
 		<h1 class="text-danger text-center"><strong>Welcome to The Giraffe Tracker Database</strong></h1>

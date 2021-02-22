@@ -7,10 +7,14 @@
 <head>
 <meta charset="ISO-8859-1">
 <meta name="author" content="Jessica LaPlante">
+
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/simplex/bootstrap.min.css">
-<title>Add New Location</title>
+<link rel="stylesheet" href="/css/style.css">
+<title>Add A New Location</title>
 </head>
-<body>
+<body class="background-img">
+	<br />
+	<br />
 
 <div class="container">
 	<h2>Add Location</h2>
@@ -26,9 +30,9 @@
 	</form:form>
 </div>
 	<br />
-	<a href="/giraffe">Dashboard</a>
+	<a href="/giraffe" class="btn btn-danger">Dashboard</a>
 	<br />
-	<a href="/logout">Logout</a>
+	<a href="/logout" class="btn btn-danger">Logout</a>
 	
 </body>
 </html>
